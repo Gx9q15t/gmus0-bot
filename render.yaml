@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: gmus0-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: OPENAI_BASE_URL
+        value: https://generativelanguage.googleapis.com/v1beta/openai/
+      - key: OPENAI_API_KEY
+        value: AIzaSyD2jpfP_Rd7EtVlSfD0dMjHH7m1Gse71O4
+      - key: BOT_TOKEN
+        value: 8514686888:AAHp4WRhV_ysqrSkqV6EXl5XEWX1ee-QllE
+      - key: AI_MODEL
+        value: gemini-2.5-flash
+      - key: AI_MODEL_FAST
+        value: gemini-2.5-flash-lite
+      - key: AI_MODEL_DEEP
+        value: gemini-2.5-flash
+      - key: PORT
+        value: "10000"
