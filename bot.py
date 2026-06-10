@@ -1977,7 +1977,25 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     
     logger.info(f"🚀 GMuS0 Bot {VERSION} started!")
-    app.run_polling(drop_pending_updates=True)
+    # Delete any existing webhook to avoid conflicts
+    import httpx
+    try:
+        httpx.get(f"https://api.telegram.org/bot{BOT_TOKEN}/deleteWebhook?drop_pending_updates=true")
+    except:
+        pass
+    app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":
-    main()
+    while True:
+        try:
+            main()
+        except SystemExit:
+            break
+        except KeyboardInterrupt:
+            break
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            logger.error(f"Bot crashed: {e}, restarting in 5s...")
+            import time
+            time.sleep(5)
