@@ -20,12 +20,12 @@ from openai import OpenAI
 
 # ─── Configuration ───
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "8514686888:AAHp4WRhV_ysqrSkqV6EXl5XEWX1ee-QllE")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "AIzaSyD2jpfP_Rd7EtVlSfD0dMjHH7m1Gse71O4")
-OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://generativelanguage.googleapis.com/v1beta/openai/")
-AI_MODEL = os.environ.get("AI_MODEL", "gemini-2.5-flash")
-AI_MODEL_FAST = os.environ.get("AI_MODEL_FAST", "gemini-2.5-flash-lite")
-AI_MODEL_DEEP = os.environ.get("AI_MODEL_DEEP", "gemini-2.5-flash")
-FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-3-flash-preview", "gemini-3.1-flash-lite-preview"]
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "free-no-key-needed")
+OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://text.pollinations.ai/openai")
+AI_MODEL = os.environ.get("AI_MODEL", "openai-fast")
+AI_MODEL_FAST = os.environ.get("AI_MODEL_FAST", "openai-fast")
+AI_MODEL_DEEP = os.environ.get("AI_MODEL_DEEP", "openai")
+FALLBACK_MODELS = ["openai-fast", "openai", "openai-large"]
 VERSION = "v6.0 UNLEASHED"
 DATA_DIR = Path("./data")
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -1977,25 +1977,7 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     
     logger.info(f"🚀 GMuS0 Bot {VERSION} started!")
-    # Delete any existing webhook to avoid conflicts
-    import httpx
-    try:
-        httpx.get(f"https://api.telegram.org/bot{BOT_TOKEN}/deleteWebhook?drop_pending_updates=true")
-    except:
-        pass
-    app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
+    app.run_polling(drop_pending_updates=True)
 
 if __name__ == "__main__":
-    while True:
-        try:
-            main()
-        except SystemExit:
-            break
-        except KeyboardInterrupt:
-            break
-        except Exception as e:
-            import traceback
-            traceback.print_exc()
-            logger.error(f"Bot crashed: {e}, restarting in 5s...")
-            import time
-            time.sleep(5)
+    main()
